@@ -36,6 +36,30 @@ public final class RequestSpecFactory {
   }
 
   /**
+   * Returns a {@link RequestSpecification} targeting the auth-service with a Bearer token.
+   *
+   * @param token JWT Bearer token
+   * @return authenticated spec for protected auth endpoints
+   */
+  public static RequestSpecification authSpec(String token) {
+    return baseSpec(ENV.authBaseUrl())
+        .addHeader("Authorization", "Bearer " + token)
+        .build();
+  }
+
+  /**
+   * Returns a {@link RequestSpecification} targeting the board-service with a Bearer token.
+   *
+   * @param token JWT Bearer token (tenant is resolved from the JWT claim)
+   * @return authenticated spec for board endpoints
+   */
+  public static RequestSpecification boardSpec(String token) {
+    return baseSpec(ENV.boardBaseUrl())
+        .addHeader("Authorization", "Bearer " + token)
+        .build();
+  }
+
+  /**
    * Returns a {@link RequestSpecification} targeting the board-service with a Bearer token
    * and tenant header already set.
    *

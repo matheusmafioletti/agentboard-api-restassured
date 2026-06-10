@@ -11,6 +11,9 @@ import java.util.Map;
  */
 public final class ScenarioContext {
 
+  /** Key for the most recent HTTP response in the current scenario. */
+  public static final String KEY_LAST_RESPONSE = "lastResponse";
+
   private static final ThreadLocal<Map<String, Object>> CONTEXT =
       ThreadLocal.withInitial(HashMap::new);
 

@@ -100,6 +100,14 @@
       <artifactId>allure-cucumber7-jvm</artifactId>
       <version>${allure.version}</version>
       <scope>test</scope>
+      <exclusions>
+        <!-- WORKAROUND: allure 2.27.0 brings in gherkin 26.2.0 which caps messages at <23,
+             conflicting with cucumber-core 7.18.0 that requires messages 24.1.0. -->
+        <exclusion>
+          <groupId>io.cucumber</groupId>
+          <artifactId>gherkin</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- Owner — environment-based configuration -->
