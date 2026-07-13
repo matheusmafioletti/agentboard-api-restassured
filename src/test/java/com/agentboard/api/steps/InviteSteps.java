@@ -18,9 +18,6 @@ import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Step definitions for tenant invite and membership management flows.
- */
 public class InviteSteps {
 
   private static final String KEY_INVITE_ID = "inviteId";
@@ -29,7 +26,6 @@ public class InviteSteps {
   private static final String KEY_MEMBER_USER_ID = "memberUserId";
   private static final String KEY_MEMBER_TOKEN = "memberToken";
 
-  /** Registers an admin user and stores the authenticated session. */
   @Given("an admin user is registered and authenticated")
   public void anAdminUserIsRegisteredAndAuthenticated() {
     AuthSteps authSteps = new AuthSteps();
@@ -37,7 +33,6 @@ public class InviteSteps {
     authSteps.aUserIsRegisteredWithPreparedData();
   }
 
-  /** Creates an invite for a freshly generated email address. */
   @When("the admin creates an invite for a new email")
   @Given("the admin creates an invite for a new email")
   public void theAdminCreatesAnInviteForANewEmail() {
@@ -46,21 +41,18 @@ public class InviteSteps {
     createInvite(inviteeEmail, TokenStore.getToken(), TokenStore.getTenantId());
   }
 
-  /** Creates an invite targeting the separately registered existing user. */
   @Given("the admin creates an invite for the existing user email")
   public void theAdminCreatesAnInviteForTheExistingUserEmail() {
     String inviteeEmail = ScenarioContext.get("existingUserEmail", String.class);
     createInvite(inviteeEmail, TokenStore.getToken(), TokenStore.getTenantId());
   }
 
-  /** A USER-role member attempts to create an invite and expects forbidden. */
   @When("the member creates an invite for a new email")
   public void theMemberCreatesAnInviteForANewEmail() {
     String inviteeEmail = TestDataFactory.generateEmail();
     createInvite(inviteeEmail, ScenarioContext.get(KEY_MEMBER_TOKEN, String.class), TokenStore.getTenantId());
   }
 
-  /** Cancels the pending invite created earlier in the scenario. */
   @When("the admin cancels the invite")
   public void theAdminCancelsTheInvite() {
     Response response = given()
@@ -74,7 +66,6 @@ public class InviteSteps {
     AuthSteps.storeResponse(response);
   }
 
-  /** Accepts the pending invite as a brand-new user. */
   @When("a new user accepts the invite")
   public void aNewUserAcceptsTheInvite() {
     acceptInvite(Map.of(
@@ -82,7 +73,6 @@ public class InviteSteps {
         "password", TestDataFactory.defaultPassword()));
   }
 
-  /** Accepts the pending invite as the pre-registered existing user. */
   @When("the existing user accepts the invite")
   public void theExistingUserAcceptsTheInvite() {
     acceptInvite(Map.of(
@@ -90,7 +80,6 @@ public class InviteSteps {
         "password", ScenarioContext.get("existingUserPassword", String.class)));
   }
 
-  /** Attempts to accept an invite using a random invalid token. */
   @When("I accept an invite with an invalid token")
   public void iAcceptAnInviteWithAnInvalidToken() {
     Response response = given()
@@ -106,7 +95,6 @@ public class InviteSteps {
     AuthSteps.storeResponse(response);
   }
 
-  /** Revokes a USER member from the tenant. */
   @When("the admin revokes the member")
   public void theAdminRevokesTheMember() {
     Response response = given()
@@ -120,7 +108,6 @@ public class InviteSteps {
     AuthSteps.storeResponse(response);
   }
 
-  /** Attempts to revoke the only admin member of the tenant. */
   @When("the admin tries to revoke themselves as the only admin")
   public void theAdminTriesToRevokeThemselvesAsTheOnlyAdmin() {
     Response response = given()
@@ -134,7 +121,6 @@ public class InviteSteps {
     AuthSteps.storeResponse(response);
   }
 
-  /** Invites and accepts a new user, storing their USER session for later steps. */
   @Given("a member user has accepted an invite as USER")
   public void aMemberUserHasAcceptedAnInviteAsUser() {
     theAdminCreatesAnInviteForANewEmail();
@@ -145,14 +131,12 @@ public class InviteSteps {
     ScenarioContext.set(KEY_MEMBER_TOKEN, AuthSteps.lastResponse().jsonPath().getString("token"));
   }
 
-  /** Asserts that the invite response contains a parseable token. */
   @Then("the invite should have a token")
   public void theInviteShouldHaveAToken() {
     String inviteToken = ScenarioContext.get(KEY_INVITE_TOKEN, String.class);
     assertThat("Expected invite token to be stored", inviteToken, not(emptyOrNullString()));
   }
 
-  /** Asserts the accepted invite session carries the expected role. */
   @Then("the accepted membership role should be {string}")
   @And("the accepted membership role should be {string}")
   public void theAcceptedMembershipRoleShouldBe(String expectedRole) {

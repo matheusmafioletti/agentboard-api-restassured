@@ -20,7 +20,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <!-- Dependency versions -->
     <restassured.version>5.4.0</restassured.version>
     <cucumber.version>7.18.0</cucumber.version>
     <junit.jupiter.version>5.10.2</junit.jupiter.version>
@@ -29,18 +28,15 @@
     <owner.version>1.0.12</owner.version>
     <jackson.version>2.17.1</jackson.version>
 
-    <!-- Plugin versions -->
     <maven.surefire.version>3.2.5</maven.surefire.version>
     <maven.compiler.version>3.13.0</maven.compiler.version>
     <allure.maven.version>2.13.0</allure.maven.version>
     <aspectj.version>1.9.22</aspectj.version>
 
-    <!-- Runtime config -->
     <env>local</env>
   </properties>
 
   <dependencies>
-    <!-- RestAssured -->
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
@@ -60,7 +56,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Cucumber -->
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-java</artifactId>
@@ -74,7 +69,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- JUnit 5 -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
@@ -94,7 +88,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Allure Cucumber 7 integration -->
     <dependency>
       <groupId>io.qameta.allure</groupId>
       <artifactId>allure-cucumber7-jvm</artifactId>
@@ -110,7 +103,6 @@
       </exclusions>
     </dependency>
 
-    <!-- Owner — environment-based configuration -->
     <dependency>
       <groupId>org.aeonbits.owner</groupId>
       <artifactId>owner</artifactId>
@@ -118,7 +110,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Jackson for JSON serialization/deserialization -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
@@ -129,7 +120,6 @@
 
   <build>
     <plugins>
-      <!-- Compiler -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -141,7 +131,6 @@
         </configuration>
       </plugin>
 
-      <!-- Surefire — JUnit Platform with AspectJ weaving for Allure -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -172,7 +161,6 @@
         </dependencies>
       </plugin>
 
-      <!-- Allure Maven -->
       <plugin>
         <groupId>io.qameta.allure</groupId>
         <artifactId>allure-maven</artifactId>
@@ -186,7 +174,6 @@
   </build>
 
   <profiles>
-    <!-- Default profile: local development -->
     <profile>
       <id>local</id>
       <activation>
@@ -197,7 +184,6 @@
       </properties>
     </profile>
 
-    <!-- Staging/CI profile -->
     <profile>
       <id>staging</id>
       <properties>

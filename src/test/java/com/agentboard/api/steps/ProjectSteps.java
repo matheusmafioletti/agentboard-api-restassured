@@ -14,21 +14,12 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * Step definitions for board-service project management flows.
- */
 public class ProjectSteps {
 
   private static final String KEY_PROJECT_ID = "projectId";
   private static final String KEY_OTHER_PROJECT_ID = "otherProjectId";
   private static final String KEY_OTHER_USER_TOKEN = "otherUserToken";
 
-  /**
-   * Authenticates as the given user by performing a fresh login and saving the resulting
-   * token and tenant ID into the scenario context.
-   *
-   * @param email the user's email address
-   */
   @Given("I am authenticated as {string}")
   public void iAmAuthenticatedAs(String email) {
     Response loginResponse = given()
@@ -43,13 +34,11 @@ public class ProjectSteps {
     saveSession(loginResponse);
   }
 
-  /** Registers, logs in, and creates a project for the current user. */
   @Given("an authenticated user with a project")
   public void anAuthenticatedUserWithAProject() {
     provisionAuthenticatedProject();
   }
 
-  /** Provisions two isolated tenants each with their own project. */
   @Given("two users from different tenants each with a project")
   public void twoUsersFromDifferentTenantsEachWithAProject() {
     provisionAuthenticatedProject();
@@ -60,7 +49,6 @@ public class ProjectSteps {
     ScenarioContext.set(KEY_OTHER_USER_TOKEN, TokenStore.getToken());
   }
 
-  /** Registers a second tenant user and creates a project for isolation scenarios. */
   public void freshSecondTenantWithProject() {
     AuthSteps authSteps = new AuthSteps();
     authSteps.freshRegistrationDataIsPrepared();
@@ -70,13 +58,11 @@ public class ProjectSteps {
     assertEquals(201, AuthSteps.lastResponse().statusCode());
   }
 
-  /** Creates a project with a unique generated name. */
   @When("I create a project with a unique name")
   public void iCreateAProjectWithAUniqueName() {
     createProject(TestDataFactory.generateProjectName(), TokenStore.getToken());
   }
 
-  /** Lists all projects visible to the authenticated user. */
   @When("I list projects")
   public void iListProjects() {
     Response response = given()
@@ -89,7 +75,6 @@ public class ProjectSteps {
     AuthSteps.storeResponse(response);
   }
 
-  /** Lists projects without providing an authentication token. */
   @When("I list projects without authentication")
   public void iListProjectsWithoutAuthentication() {
     Response response = given()
@@ -102,7 +87,6 @@ public class ProjectSteps {
     AuthSteps.storeResponse(response);
   }
 
-  /** Requests a foreign tenant's project by identifier. */
   @When("the first user requests the second user's project by id")
   public void theFirstUserRequestsTheSecondUsersProjectById() {
     String firstToken = ScenarioContext.get("firstUserToken", String.class);
@@ -119,7 +103,6 @@ public class ProjectSteps {
     AuthSteps.storeResponse(response);
   }
 
-  /** Asserts that the project list response is a non-empty array. */
   @Then("the project list should not be empty")
   public void theProjectListShouldNotBeEmpty() {
     assertTrue(AuthSteps.lastResponse().jsonPath().getList("$").size() > 0);

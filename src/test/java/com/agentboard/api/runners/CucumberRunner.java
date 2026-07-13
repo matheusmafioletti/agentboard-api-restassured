@@ -9,12 +9,6 @@ import static io.cucumber.junit.platform.engine.Constants.FILTER_TAGS_PROPERTY_N
 import static io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME;
 import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
 
-/**
- * JUnit Platform Suite entry point that wires Cucumber to the {@code features/} classpath
- * resource and the {@code com.agentboard.api} glue package.
- *
- * <p>Run with: {@code mvn test -Denv=local -Dcucumber.filter.tags="@smoke"}
- */
 @Suite
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")

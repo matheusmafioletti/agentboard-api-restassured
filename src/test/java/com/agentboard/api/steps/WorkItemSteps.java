@@ -17,9 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * Step definitions for board-service work-item lifecycle and hierarchy flows.
- */
 public class WorkItemSteps {
 
   private static final String KEY_PROJECT_ID = "projectId";
@@ -29,13 +26,11 @@ public class WorkItemSteps {
   private static final String KEY_OTHER_WORK_ITEM_ID = "otherWorkItemId";
   private static final String KEY_OTHER_USER_TOKEN = "otherUserToken";
 
-  /** Creates a work item of the given type with the given title. */
   @When("I create a {word} work item with title {string}")
   public void iCreateAWorkItemWithTypeAndTitle(String type, String title) {
     createWorkItem(type, title, null, TokenStore.getToken());
   }
 
-  /** Creates a FEATURE work item used as a parent for hierarchy scenarios. */
   @Given("a FEATURE work item exists in the current project")
   @When("I create a FEATURE work item for hierarchy setup")
   public void aFeatureWorkItemExistsInTheCurrentProject() {
@@ -44,7 +39,6 @@ public class WorkItemSteps {
     ScenarioContext.set(KEY_FEATURE_ID, ScenarioContext.get(KEY_WORK_ITEM_ID, String.class));
   }
 
-  /** Creates a USER_STORY under the current FEATURE parent. */
   @When("I create a USER_STORY under the current feature")
   public void iCreateAUserStoryUnderTheCurrentFeature() {
     createWorkItem("USER_STORY", "Child User Story",
@@ -53,14 +47,12 @@ public class WorkItemSteps {
     ScenarioContext.set(KEY_USER_STORY_ID, ScenarioContext.get(KEY_WORK_ITEM_ID, String.class));
   }
 
-  /** Creates a TASK linked to the current USER_STORY parent. */
   @When("I create a TASK with parent USER_STORY")
   public void iCreateATaskWithParentUserStory() {
     createWorkItem("TASK", "Child Task",
         ScenarioContext.get(KEY_USER_STORY_ID, String.class), TokenStore.getToken());
   }
 
-  /** Creates a TASK under the current USER_STORY to use as an invalid parent. */
   @When("I create a TASK under the current user story")
   public void iCreateATaskUnderTheCurrentUserStory() {
     createWorkItem("TASK", "Parent Task",
@@ -69,14 +61,12 @@ public class WorkItemSteps {
     ScenarioContext.set("parentTaskId", ScenarioContext.get(KEY_WORK_ITEM_ID, String.class));
   }
 
-  /** Attempts to create a TASK with another TASK as parent (invalid hierarchy). */
   @When("I try to create a TASK with invalid parent type")
   public void iTryToCreateATaskWithInvalidParentType() {
     createWorkItem("TASK", "Invalid Child Task",
         ScenarioContext.get("parentTaskId", String.class), TokenStore.getToken());
   }
 
-  /** Lists work items for the active project. */
   @When("I list work items for the current project")
   @When("I list all work items")
   public void iListWorkItemsForTheCurrentProject() {
@@ -91,7 +81,6 @@ public class WorkItemSteps {
     AuthSteps.storeResponse(response);
   }
 
-  /** Updates the status of the most recently created work item. */
   @When("I update the work item status to {string}")
   public void iUpdateTheWorkItemStatusTo(String newStatus) {
     String workItemId = ScenarioContext.get(KEY_WORK_ITEM_ID, String.class);
@@ -107,7 +96,6 @@ public class WorkItemSteps {
     AuthSteps.storeResponse(response);
   }
 
-  /** Provisions two tenants each with a work item for isolation checks. */
   @Given("two users from different tenants each with a work item")
   public void twoUsersFromDifferentTenantsEachWithAWorkItem() {
     ProjectSteps projectSteps = new ProjectSteps();
@@ -123,7 +111,6 @@ public class WorkItemSteps {
     ScenarioContext.set(KEY_OTHER_USER_TOKEN, TokenStore.getToken());
   }
 
-  /** Requests a foreign tenant work item by identifier. */
   @When("the first user requests the second user's work item by id")
   public void theFirstUserRequestsTheSecondUsersWorkItemById() {
     Response response = given()
@@ -136,27 +123,23 @@ public class WorkItemSteps {
     AuthSteps.storeResponse(response);
   }
 
-  /** Asserts that the most recent work-item creation returned HTTP 201. */
   @Then("the work item should be created successfully")
   public void theWorkItemShouldBeCreatedSuccessfully() {
     assertEquals(201, AuthSteps.lastResponse().statusCode());
     assertNotNull(AuthSteps.lastResponse().jsonPath().getString("id"));
   }
 
-  /** Asserts that the returned work item carries the expected status value. */
   @Then("the work item should have status {string}")
   @And("the work item status should be {string}")
   public void theWorkItemShouldHaveStatus(String expectedStatus) {
     assertEquals(expectedStatus, AuthSteps.lastResponse().jsonPath().getString("status"));
   }
 
-  /** Asserts that the returned work item carries the expected type value. */
   @Then("the work item type should be {string}")
   public void theWorkItemTypeShouldBe(String expectedType) {
     assertEquals(expectedType, AuthSteps.lastResponse().jsonPath().getString("type"));
   }
 
-  /** Asserts that the returned work item references the expected parent. */
   @Then("the work item parent id should match the user story")
   public void theWorkItemParentIdShouldMatchTheUserStory() {
     assertEquals(
@@ -164,7 +147,6 @@ public class WorkItemSteps {
         AuthSteps.lastResponse().jsonPath().getString("parentId"));
   }
 
-  /** Asserts that the list response contains at least one work item. */
   @Then("the response should contain at least one work item")
   @And("the work item list should not be empty")
   public void theResponseShouldContainAtLeastOneWorkItem() {
@@ -172,7 +154,6 @@ public class WorkItemSteps {
     assertTrue(AuthSteps.lastResponse().jsonPath().getList("$").size() > 0);
   }
 
-  /** Legacy step kept for backward compatibility with older feature wording. */
   @When("I create a work item with title {string}")
   public void iCreateAWorkItemWithTitle(String title) {
     iCreateAWorkItemWithTypeAndTitle("FEATURE", title);
