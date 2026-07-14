@@ -4,7 +4,6 @@ import com.agentboard.api.config.RequestSpecFactory;
 import com.agentboard.api.support.ScenarioContext;
 import com.agentboard.api.support.TestDataFactory;
 import com.agentboard.api.support.TokenStore;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -33,7 +32,6 @@ public class InviteSteps {
     authSteps.aUserIsRegisteredWithPreparedData();
   }
 
-  @When("the admin creates an invite for a new email")
   @Given("the admin creates an invite for a new email")
   public void theAdminCreatesAnInviteForANewEmail() {
     String inviteeEmail = TestDataFactory.generateEmail();
@@ -138,7 +136,6 @@ public class InviteSteps {
   }
 
   @Then("the accepted membership role should be {string}")
-  @And("the accepted membership role should be {string}")
   public void theAcceptedMembershipRoleShouldBe(String expectedRole) {
     assertEquals(expectedRole, AuthSteps.lastResponse().jsonPath().getString("role"));
   }
