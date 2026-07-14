@@ -104,7 +104,6 @@ public class AuthSteps {
     saveSessionFromResponse(response);
   }
 
-  @Given("the user creates a second tenant")
   @When("the user creates a second tenant")
   public void theUserCreatesASecondTenant() {
     String secondTenantName = TestDataFactory.generateTenantName();
@@ -193,7 +192,6 @@ public class AuthSteps {
   }
 
   @Then("the response body should contain {string}")
-  @And("the response body should contain {string}")
   public void theResponseBodyShouldContain(String substring) {
     String body = lastResponse().getBody().asString();
     assertTrue(
@@ -202,7 +200,6 @@ public class AuthSteps {
   }
 
   @Then("the response role should be {string}")
-  @And("the response role should be {string}")
   public void theResponseRoleShouldBe(String expectedRole) {
     String role = lastResponse().jsonPath().getString("role");
     if (role == null) {

@@ -32,7 +32,6 @@ public class WorkItemSteps {
   }
 
   @Given("a FEATURE work item exists in the current project")
-  @When("I create a FEATURE work item for hierarchy setup")
   public void aFeatureWorkItemExistsInTheCurrentProject() {
     createWorkItem("FEATURE", "Parent Feature", null, TokenStore.getToken());
     assertEquals(201, AuthSteps.lastResponse().statusCode());
@@ -68,7 +67,6 @@ public class WorkItemSteps {
   }
 
   @When("I list work items for the current project")
-  @When("I list all work items")
   public void iListWorkItemsForTheCurrentProject() {
     Response response = given()
         .spec(RequestSpecFactory.boardSpec(TokenStore.getToken()))
