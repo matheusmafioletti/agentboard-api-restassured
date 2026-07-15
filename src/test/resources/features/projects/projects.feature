@@ -19,9 +19,9 @@ Feature: Project Management
     Then the response status should be 200
     And the project list should not be empty
 
-  Scenario: Unauthenticated access returns 401
+  Scenario: Unauthenticated access returns 403
     When I list projects without authentication
-    Then the response status should be 401
+    Then the response status should be 403
 
   Scenario: Cross-tenant project access returns 404
     Given two users from different tenants each with a project
