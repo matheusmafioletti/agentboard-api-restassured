@@ -5,9 +5,18 @@
 ![RestAssured 5.x](https://img.shields.io/badge/RestAssured-5.4.0-green)
 ![Cucumber 7.x](https://img.shields.io/badge/Cucumber-7.18.0-brightgreen?logo=cucumber)
 ![Allure 2.x](https://img.shields.io/badge/Allure-2.27.0-yellow)
+![CI](https://github.com/matheusmafioletti/agentboard-api-restassured/actions/workflows/ci.yml/badge.svg)
 
 BDD API test suite for **AgentBoard** — a multi-tenant Kanban board system.  
 Tests are written in Gherkin, executed via Cucumber 7 + JUnit Platform, and reported with Allure.
+
+**Links rápidos**
+
+| | |
+|---|---|
+| Demo do produto | https://agentboard.matheusmafioletti.com |
+| Portal QA (Allure) | https://matheusmafioletti.github.io/agentboard-qa-reports/ |
+| Backend | https://github.com/matheusmafioletti/agentboard-backend |
 
 ---
 
@@ -144,8 +153,33 @@ GitHub Actions workflow: `.github/workflows/ci.yml`
 
 - Runs on push/PR to `main`
 - Supports `workflow_dispatch` with `environment` and `tags` inputs
-- Spins up a Postgres 16 service container
+- Pulls GHCR images (`agentboard-auth`, `agentboard-board`, `agentboard-api-docs`, `agentboard-web:e2e-latest`) and starts the full E2E Docker stack via `agentboard-infra`
+- Runs `@smoke` tests against `http://localhost:8080` (single-origin nginx proxy)
 - Uploads Allure results and rendered HTML report as artifacts (30-day retention)
+
+### CI vs desenvolvimento local
+
+| Context | Auth URL | Board URL | How services run |
+|---------|----------|-----------|------------------|
+| **Local nativo** | `http://localhost:8080` | `http://localhost:8081` | `auth-service` and `board-service` started separately via Gradle (`local.properties`) |
+| **CI / E2E stack** | `http://localhost:8080` | `http://localhost:8080` | Full Docker Compose stack with nginx single-origin proxy; override with `-Dbase.url.auth` / `-Dbase.url.board` |
+
+When running against the E2E stack locally, pass the same overrides as CI:
+
+```bash
+mvn test -Denv=local \
+  -Dbase.url.auth=http://localhost:8080 \
+  -Dbase.url.board=http://localhost:8080 \
+  -Dcucumber.filter.tags="@smoke"
+```
+
+---
+
+## Screenshots
+
+| Allure Overview | Cenário BDD |
+|---|---|
+| ![Allure overview](docs/screenshots/allure-overview.webp) | ![Cucumber scenario](docs/screenshots/allure-scenario-detail.webp) |
 
 ---
 
